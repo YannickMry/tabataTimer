@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="seance_add_width">30dp</dimen>
+    <dimen name="seance_add_height">30dp</dimen>
+</resources>

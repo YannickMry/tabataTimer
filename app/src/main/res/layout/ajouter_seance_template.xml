@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/seance_row_template"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/seance_nom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:text="Nom de la ligne"
+        />
+
+    <LinearLayout
+        android:id="@+id/seance_row_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/seance_plus"
+            android:layout_width="@dimen/seance_add_width"
+            android:layout_height="@dimen/seance_add_height"
+            android:contentDescription="@string/image_plus"
+            android:src="@drawable/plus" />
+
+        <EditText
+            android:id="@+id/seance_edit"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:ems="10"
+            android:text="" />
+
+        <ImageView
+            android:id="@+id/seance_moins"
+            android:layout_width="@dimen/seance_add_width"
+            android:layout_height="@dimen/seance_add_height"
+            android:contentDescription="@string/image_moins"
+            android:src="@drawable/remove" />
+
+    </LinearLayout>
+
+</LinearLayout>

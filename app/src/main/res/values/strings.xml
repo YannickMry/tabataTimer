@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">mauryyTabata</string>
+    <string name="liste_seance">liste des séances</string>
+    <string name="ajouter_seance">Ajouter une séance</string>
+    <string name="image_plus">image d\'incrementation plus</string>
+    <string name="image_moins">Image de décrementation moins</string>
+</resources>
