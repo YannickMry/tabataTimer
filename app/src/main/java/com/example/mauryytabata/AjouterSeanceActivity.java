@@ -1,8 +1,10 @@
 package com.example.mauryytabata;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,13 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mauryytabata.db.Tabata;
+import com.example.mauryytabata.db.TabataViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,15 +35,17 @@ public class AjouterSeanceActivity extends AppCompatActivity {
     private HashMap<String, EditText> editText;
     private String[] tabataStep;
     private EditText editTextName;
+    private Button btnSave;
+    private TabataViewModel tabataViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         this.tabata = new Tabata();
         this.tabataStep = tabata.getTabataStep();
         this.editText = new HashMap<>();
+        this.tabataViewModel = ViewModelProviders.of(this).get(TabataViewModel.class);
 
         showAllRow();
 
@@ -51,6 +58,24 @@ public class AjouterSeanceActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveTabata();
+            }
+        });
+
+    }
+
+    private void saveTabata(){
+
+        tabataViewModel.insert(tabata);
+        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+        finish();
+        Intent intent = new Intent(AjouterSeanceActivity.this, ListeSeanceActivity.class);
+        startActivity(intent);
+
     }
 
     public void showAllRow(){
@@ -59,6 +84,9 @@ public class AjouterSeanceActivity extends AppCompatActivity {
         this.ajouterSeanceLayout = (LinearLayout) inflater.inflate(R.layout.activity_ajouter_seance, null);
 
         this.editTextName = this.ajouterSeanceLayout.findViewById(R.id.ajouter_seance_name);
+
+        this.btnSave = new Button(this);
+        this.btnSave.setText("Sauvegarder");
 
 
         for (int i = 0; i < tabataStep.length; i++) {
@@ -80,8 +108,10 @@ public class AjouterSeanceActivity extends AppCompatActivity {
 
             ajouterSeanceLayout.addView(template);
         }
+        ajouterSeanceLayout.addView(btnSave);
 
         setContentView(ajouterSeanceLayout);
+        setTitle("Ajouter une séance");
     }
 
     public void add(View view){
@@ -99,6 +129,5 @@ public class AjouterSeanceActivity extends AppCompatActivity {
     public void update(String tag, int number){
         EditText editText = this.editText.get(tag);
         editText.setText(String.valueOf(number));
-        Log.d("Objet", "Tabata: " + this.tabata);
     }
 }

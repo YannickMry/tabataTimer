@@ -41,6 +41,7 @@ public class Tabata {
     @Ignore
     private HashMap<String, String> tabataName;
 
+    @Ignore
     public Tabata() {
         initTabataName();
     }
