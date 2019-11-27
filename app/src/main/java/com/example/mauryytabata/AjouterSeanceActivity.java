@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,60 +23,65 @@ import java.util.HashMap;
 
 public class AjouterSeanceActivity extends AppCompatActivity {
 
+    private View template;
     private LinearLayout ajouterSeanceLayout;
-    private LinearLayout ajouterSeanceTemplate;
-    private View custom;
-    private int count;
-    private HashMap<String, EditText> editText;
+
     private Tabata tabata;
+    private HashMap<String, EditText> editText;
+    private String[] tabataStep;
+    private EditText editTextName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout parent = (LinearLayout) inflater.inflate(R.layout.activity_ajouter_seance, null);
-        this.count = 0;
+
         this.tabata = new Tabata();
+        this.tabataStep = tabata.getTabataStep();
         this.editText = new HashMap<>();
 
-        ArrayList<String> tabata = new ArrayList<>();
-        tabata.add("preparation");
-        tabata.add("serie");
-        tabata.add("repetition");
-        tabata.add("travail");
-        tabata.add("repos");
-        tabata.add("repos_long");
+        showAllRow();
 
-        HashMap<String, String> tabataName = new HashMap<>();
-        tabataName.put("preparation", "Préparation");
-        tabataName.put("serie", "Série");
-        tabataName.put("repetition", "Répétition");
-        tabataName.put("travail", "Travail");
-        tabataName.put("repos", "Repos");
-        tabataName.put("repos_long", "Repos long");
+        // Ajoute un listener pour mettre à jour la propriété name de l'objet tabata
+        editTextName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    tabata.setName(editTextName.getText().toString());
+                }
+            }
+        });
+    }
 
-        for (int i = 0; i < tabata.size(); i++) {
-            this.custom = inflater.inflate(R.layout.ajouter_seance_template, null);
+    public void showAllRow(){
 
-            TextView tv = (TextView) custom.findViewById(R.id.seance_nom);
-            tv.setText(tabataName.get(tabata.get(i)));
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.ajouterSeanceLayout = (LinearLayout) inflater.inflate(R.layout.activity_ajouter_seance, null);
 
-            ImageView ivP = (ImageView) custom.findViewById(R.id.seance_plus);
-            ivP.setTag(tabata.get(i));
+        this.editTextName = this.ajouterSeanceLayout.findViewById(R.id.ajouter_seance_name);
 
-            ImageView ivM = (ImageView) custom.findViewById(R.id.seance_moins);
-            ivM.setTag(tabata.get(i));
 
-            EditText et = (EditText) custom.findViewById(R.id.seance_edit);
-            et.setTag(tabata.get(i));
+        for (int i = 0; i < tabataStep.length; i++) {
+            this.template = inflater.inflate(R.layout.ajouter_seance_template, null);
+
+            TextView tv = (TextView) template.findViewById(R.id.seance_nom);
+            tv.setText(tabata.getTabataName(tabataStep[i]));
+
+            ImageView ivP = (ImageView) template.findViewById(R.id.seance_plus);
+            ivP.setTag(tabataStep[i]);
+
+            ImageView ivM = (ImageView) template.findViewById(R.id.seance_moins);
+            ivM.setTag(tabataStep[i]);
+
+            EditText et = (EditText) template.findViewById(R.id.seance_edit);
+            et.setTag(tabataStep[i]);
 
             this.editText.put(et.getTag().toString(), et);
 
-            parent.addView(custom);
+            ajouterSeanceLayout.addView(template);
         }
 
-        setContentView(parent);
+        setContentView(ajouterSeanceLayout);
     }
 
     public void add(View view){
@@ -92,5 +99,6 @@ public class AjouterSeanceActivity extends AppCompatActivity {
     public void update(String tag, int number){
         EditText editText = this.editText.get(tag);
         editText.setText(String.valueOf(number));
+        Log.d("Objet", "Tabata: " + this.tabata);
     }
 }

@@ -1,18 +1,48 @@
 package com.example.mauryytabata.db;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import java.util.HashMap;
+
+@Entity(tableName = "tabata_table")
 public class Tabata {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "preparation")
     private int preparation;
+
+    @ColumnInfo(name = "serie")
     private int serie;
+
+    @ColumnInfo(name = "repetition")
     private int repetition;
+
+    @ColumnInfo(name = "travail")
     private int travail;
+
+    @ColumnInfo(name = "repos")
     private int repos;
+
+    @ColumnInfo(name = "repos_long")
     private int reposLong;
+
+    @Ignore
     private static final String[] tabataStep = {"preparation", "serie", "repetition", "travail", "repos", "repos_long"};
 
+    @Ignore
+    private HashMap<String, String> tabataName;
+
     public Tabata() {
+        initTabataName();
     }
 
     public Tabata(String name, int preparation, int serie, int repetition, int travail, int repos, int reposLong) {
@@ -23,6 +53,7 @@ public class Tabata {
         this.travail = travail;
         this.repos = repos;
         this.reposLong = reposLong;
+        initTabataName();
     }
 
     public int add(String tag){
@@ -73,7 +104,7 @@ public class Tabata {
             number = getTravail();
         }
         if (tag == tabataStep[4] && this.repos > 1) {
-            setRepos(reposLong - 1);
+            setRepos(repos - 1);
             number = getRepos();
         }
         if (tag == tabataStep[5] && this.reposLong > 1) {
@@ -81,6 +112,24 @@ public class Tabata {
             number = getReposLong();
         }
         return number;
+    }
+
+    public String[] getTabataStep(){
+        return this.tabataStep;
+    }
+
+    public String getTabataName(String step){
+        return this.tabataName.get(step);
+    }
+
+    private void initTabataName(){
+        this.tabataName = new HashMap<>();
+        tabataName.put("preparation", "Préparation");
+        tabataName.put("serie", "Série");
+        tabataName.put("repetition", "Répétition");
+        tabataName.put("travail", "Travail");
+        tabataName.put("repos", "Repos");
+        tabataName.put("repos_long", "Repos long");
     }
 
     public int getId() {
@@ -145,5 +194,11 @@ public class Tabata {
 
     public void setReposLong(int reposLong) {
         this.reposLong = reposLong;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Nom séance : " + this.name + ", Préparation : " + this.preparation + ", Série : " + this.serie + ", Répétition : " + this.repetition + ", Travail : " + this.travail + ", Repos : " + this.repos + ", Repos long : " + this.reposLong;
     }
 }
