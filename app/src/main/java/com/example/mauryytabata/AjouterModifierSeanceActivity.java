@@ -1,7 +1,10 @@
 package com.example.mauryytabata;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +29,10 @@ import com.example.mauryytabata.db.TabataViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AjouterSeanceActivity extends AppCompatActivity {
+public class AjouterModifierSeanceActivity extends AppCompatActivity {
+
+    public static final String EXTRA_TABATA = "EXTRA_TABATA";
+    public static final String  EXTRA_ID = "EXTRA_ID";
 
     private View template;
     private LinearLayout ajouterSeanceLayout;
@@ -46,6 +52,8 @@ public class AjouterSeanceActivity extends AppCompatActivity {
         this.tabataStep = tabata.getTabataStep();
         this.editText = new HashMap<>();
         this.tabataViewModel = ViewModelProviders.of(this).get(TabataViewModel.class);
+
+        setTitle("Ajouter une séance");
 
         showAllRow();
 
@@ -70,11 +78,19 @@ public class AjouterSeanceActivity extends AppCompatActivity {
 
     private void saveTabata(){
 
-        tabataViewModel.insert(tabata);
-        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+        EditText ajouterSeanceName = findViewById(R.id.ajouter_seance_name);
+
+        if (ajouterSeanceName.getText().toString().trim().isEmpty()){
+            ajouterSeanceName.setError("Vous devez renseigner un nom de séance");
+            ajouterSeanceName.requestFocus();
+            return;
+        }
+
+        Intent data = new Intent();
+        data.putExtra(EXTRA_TABATA, tabata);
+
+        setResult(RESULT_OK, data);
         finish();
-        Intent intent = new Intent(AjouterSeanceActivity.this, ListeSeanceActivity.class);
-        startActivity(intent);
 
     }
 
@@ -104,6 +120,29 @@ public class AjouterSeanceActivity extends AppCompatActivity {
             EditText et = (EditText) template.findViewById(R.id.seance_edit);
             et.setTag(tabataStep[i]);
 
+            switch (tabataStep[i]){
+                case "preparation":
+                    et.setText(String.valueOf(tabata.getPreparation()));
+                    break;
+                case "serie":
+                    et.setText(String.valueOf(tabata.getSerie()));
+                    break;
+                case "repetition":
+                    et.setText(String.valueOf(tabata.getRepetition()));
+                    break;
+                case "travail":
+                    et.setText(String.valueOf(tabata.getTravail()));
+                    break;
+                case "repos":
+                    et.setText(String.valueOf(tabata.getRepos()));
+                    break;
+                case "repos_long":
+                    et.setText(String.valueOf(tabata.getReposLong()));
+                    break;
+                default:
+                    break;
+            }
+
             this.editText.put(et.getTag().toString(), et);
 
             ajouterSeanceLayout.addView(template);
@@ -111,7 +150,6 @@ public class AjouterSeanceActivity extends AppCompatActivity {
         ajouterSeanceLayout.addView(btnSave);
 
         setContentView(ajouterSeanceLayout);
-        setTitle("Ajouter une séance");
     }
 
     public void add(View view){

@@ -1,5 +1,8 @@
 package com.example.mauryytabata.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -9,7 +12,7 @@ import androidx.room.PrimaryKey;
 import java.util.HashMap;
 
 @Entity(tableName = "tabata_table")
-public class Tabata {
+public class Tabata implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -56,6 +59,29 @@ public class Tabata {
         this.reposLong = reposLong;
         initTabataName();
     }
+
+    protected Tabata(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        preparation = in.readInt();
+        serie = in.readInt();
+        repetition = in.readInt();
+        travail = in.readInt();
+        repos = in.readInt();
+        reposLong = in.readInt();
+    }
+
+    public static final Creator<Tabata> CREATOR = new Creator<Tabata>() {
+        @Override
+        public Tabata createFromParcel(Parcel in) {
+            return new Tabata(in);
+        }
+
+        @Override
+        public Tabata[] newArray(int size) {
+            return new Tabata[size];
+        }
+    };
 
     public int add(String tag){
         int number = 0;
@@ -201,5 +227,22 @@ public class Tabata {
     @Override
     public String toString() {
         return "Nom séance : " + this.name + ", Préparation : " + this.preparation + ", Série : " + this.serie + ", Répétition : " + this.repetition + ", Travail : " + this.travail + ", Repos : " + this.repos + ", Repos long : " + this.reposLong;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeInt(preparation);
+        dest.writeInt(serie);
+        dest.writeInt(repetition);
+        dest.writeInt(travail);
+        dest.writeInt(repos);
+        dest.writeInt(reposLong);
     }
 }

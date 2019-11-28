@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         ajouterSeance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AjouterSeanceActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AjouterModifierSeanceActivity.class);
                 startActivity(intent);
             }
         });
