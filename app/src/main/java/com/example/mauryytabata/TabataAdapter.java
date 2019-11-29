@@ -32,7 +32,12 @@ public class TabataAdapter extends RecyclerView.Adapter<TabataAdapter.TabataHold
     public void onBindViewHolder(@NonNull TabataHolder holder, int position) {
         Tabata currentTabata = tabatas.get(position);
         holder.itemName.setText(currentTabata.getName());
-        holder.itemPreparation.setText(String.valueOf(currentTabata.getId()));
+        holder.itemPreparation.setText("Préparation : " + String.valueOf(currentTabata.getPreparation()));
+        holder.itemTravail.setText("Travail : " + String.valueOf(currentTabata.getTravail()));
+        holder.itemRepos.setText("Repos : " + String.valueOf(currentTabata.getRepos()));
+        holder.itemReposLong.setText("Repos long : " + String.valueOf(currentTabata.getReposLong()));
+        holder.itemSerie.setText("Nombre de série : " + String.valueOf(currentTabata.getSerie()));
+        holder.itemRepetition.setText("Nombre de répétition : " + String.valueOf(currentTabata.getRepetition()));
     }
 
     @Override
@@ -52,11 +57,21 @@ public class TabataAdapter extends RecyclerView.Adapter<TabataAdapter.TabataHold
     class TabataHolder extends RecyclerView.ViewHolder{
         private TextView itemName;
         private TextView itemPreparation;
+        private TextView itemTravail;
+        private TextView itemRepos;
+        private TextView itemReposLong;
+        private TextView itemSerie;
+        private TextView itemRepetition;
 
         public TabataHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.item_name);
             itemPreparation = itemView.findViewById(R.id.item_preparation);
+            itemTravail = itemView.findViewById(R.id.item_travail);
+            itemRepos = itemView.findViewById(R.id.item_repos);
+            itemReposLong = itemView.findViewById(R.id.item_repos_long);
+            itemSerie = itemView.findViewById(R.id.item_serie);
+            itemRepetition = itemView.findViewById(R.id.item_repetition);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -9,6 +9,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Entity(tableName = "tabata_table")
@@ -43,6 +44,15 @@ public class Tabata implements Parcelable {
 
     @Ignore
     private HashMap<String, String> tabataName;
+
+    @Ignore
+    private HashMap<String, String> tabataColor;
+
+    @Ignore
+    private ArrayList<Integer> tabataTimer;
+
+    @Ignore
+    private ArrayList<String> tabataSequence;
 
     @Ignore
     public Tabata() {
@@ -141,15 +151,52 @@ public class Tabata implements Parcelable {
         return number;
     }
 
+    /**
+     * Création d'une séance
+     */
+    public ArrayList<String> createSeance() {
+        initTabataName();
+        initTabataColor();
+
+        tabataSequence = new ArrayList<>();
+        tabataTimer = new ArrayList<>();
+
+        tabataTimer.add(preparation);
+        tabataSequence.add("preparation");
+        // Creation du nombre de séquence
+        for (int s = 1; s <= serie; s++){
+            // Nombre de cycle
+            for (int c = 1; c <= repetition; c++){
+                tabataTimer.add(travail);
+                tabataSequence.add("travail");
+                // Si c'est le dernier tours, on ne fait pas de repos
+                if (c != repetition){
+                    tabataTimer.add(repos);
+                    tabataSequence.add("repos");
+                }
+            }
+            // Si c'est le dernier tours, on ne fait pas de repos long
+            if (s != serie){
+                tabataTimer.add(reposLong);
+                tabataSequence.add("repos_long");
+            }
+        }
+        return tabataSequence;
+    }
+
     public String[] getTabataStep(){
         return this.tabataStep;
     }
 
-    public String getTabataName(String step){
+    public Integer getCurrentTimer(Integer index){ return this.tabataTimer.get(index); }
+
+    public String getCurrentName(String step){
         return this.tabataName.get(step);
     }
 
-    private void initTabataName(){
+    public String getCurrentColor(String step) { return this.tabataColor.get(step); }
+
+    public void initTabataName(){
         this.tabataName = new HashMap<>();
         tabataName.put("preparation", "Préparation");
         tabataName.put("serie", "Série");
@@ -157,6 +204,14 @@ public class Tabata implements Parcelable {
         tabataName.put("travail", "Travail");
         tabataName.put("repos", "Repos");
         tabataName.put("repos_long", "Repos long");
+    }
+
+    public void initTabataColor(){
+        this.tabataColor = new HashMap<>();
+        tabataColor.put("preparation", "#689F38");
+        tabataColor.put("travail", "#EC4E4E");
+        tabataColor.put("repos", "#F8B809");
+        tabataColor.put("repos_long", "#5588C1");
     }
 
     public int getId() {

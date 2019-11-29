@@ -78,7 +78,9 @@ public class ListeSeanceActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new TabataAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Tabata tabata) {
-                Toast.makeText(getApplicationContext(), "Séance : " + tabata.getName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ListeSeanceActivity.this, TimerActivity.class);
+                intent.putExtra(AjouterModifierSeanceActivity.EXTRA_TABATA, tabata);
+                startActivity(intent);
             }
         });
     }

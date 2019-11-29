@@ -31,7 +31,7 @@ import java.util.HashMap;
 
 public class AjouterModifierSeanceActivity extends AppCompatActivity {
 
-    public static final String EXTRA_TABATA = "EXTRA_TABATA";
+    public static String EXTRA_TABATA = "EXTRA_TABATA";
     public static final String  EXTRA_ID = "EXTRA_ID";
 
     private View template;
@@ -109,7 +109,7 @@ public class AjouterModifierSeanceActivity extends AppCompatActivity {
             this.template = inflater.inflate(R.layout.ajouter_seance_template, null);
 
             TextView tv = (TextView) template.findViewById(R.id.seance_nom);
-            tv.setText(tabata.getTabataName(tabataStep[i]));
+            tv.setText(tabata.getCurrentName(tabataStep[i]));
 
             ImageView ivP = (ImageView) template.findViewById(R.id.seance_plus);
             ivP.setTag(tabataStep[i]);

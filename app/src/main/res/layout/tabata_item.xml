@@ -26,6 +26,41 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_name"
             android:text="Préparation : 0"/>
+
+        <TextView
+            android:id="@+id/item_travail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_preparation"
+            android:text="Travail : 0"/>
+
+        <TextView
+            android:id="@+id/item_repos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_travail"
+            android:text="Repos : 0"/>
+
+        <TextView
+            android:id="@+id/item_repos_long"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_repos"
+            android:text="Repos long : 0"/>
+
+        <TextView
+            android:id="@+id/item_serie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_repos_long"
+            android:text="Nombre de série : 0"/>
+
+        <TextView
+            android:id="@+id/item_repetition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_serie"
+            android:text="Nombre de répétition : 0"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
