@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.mauryytabata.db.Tabata;
@@ -52,6 +53,7 @@ public class ListeSeanceActivity extends AppCompatActivity {
             }
         });
 
+        // Listener pour aller à l'activité ajouter une séance
         this.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +77,7 @@ public class ListeSeanceActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView(recyclerView);
 
+        // Listener pour lancer une séance
         adapter.setOnItemClickListener(new TabataAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Tabata tabata) {
@@ -83,6 +86,14 @@ public class ListeSeanceActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+
+    public void itemEdit(View view){
+        Intent intent = new Intent(ListeSeanceActivity.this, AjouterModifierSeanceActivity.class);
+        intent.putExtra(AjouterModifierSeanceActivity.EXTRA_TABATA, (Tabata) view.getTag());
+        intent.putExtra(AjouterModifierSeanceActivity.EXTRA_ID, ((Tabata) view.getTag()).getId());
+        startActivityForResult(intent, EDIT_TABATA_REQUEST);
     }
 
     @Override
@@ -96,7 +107,7 @@ public class ListeSeanceActivity extends AppCompatActivity {
             Toast.makeText(this, "Séance sauvegardée !", Toast.LENGTH_SHORT).show();
         } else if(requestCode == EDIT_TABATA_REQUEST && resultCode == RESULT_OK){
             int id = data.getIntExtra(AjouterModifierSeanceActivity.EXTRA_ID, -1);
-            Tabata tabata = data.getParcelableExtra(AjouterModifierSeanceActivity.EXTRA_TABATA);
+            Tabata tabata = data.getExtras().getParcelable(AjouterModifierSeanceActivity.EXTRA_TABATA);
             tabata.setId(id);
             tabataViewModel.update(tabata);
 

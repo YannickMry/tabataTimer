@@ -41,6 +41,9 @@ public class TimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timer);
 
         tabata = getIntent().getExtras().getParcelable(AjouterModifierSeanceActivity.EXTRA_TABATA);
+
+        setTitle(tabata.getName());
+
         sequence = tabata.createSeance();
 
         // Récupérer les view
@@ -88,6 +91,13 @@ public class TimerActivity extends AppCompatActivity {
     public void onPause(View view) {
         if (timer != null) {
             timer.cancel(); // Arrete le CountDownTimer
+        }
+    }
+
+    // Mettre en pause le compteur
+    public void onStart(View view) {
+        if (timer != null) {
+            timer.start(); // Arrete le CountDownTimer
         }
     }
 

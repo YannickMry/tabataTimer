@@ -1,6 +1,5 @@
 package com.example.mauryytabata.db;
 
-import android.annotation.TargetApi;
 import android.app.Application;
 import android.os.AsyncTask;
 

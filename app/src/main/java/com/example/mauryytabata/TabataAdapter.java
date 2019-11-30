@@ -1,10 +1,13 @@
 package com.example.mauryytabata;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +41,7 @@ public class TabataAdapter extends RecyclerView.Adapter<TabataAdapter.TabataHold
         holder.itemReposLong.setText("Repos long : " + String.valueOf(currentTabata.getReposLong()));
         holder.itemSerie.setText("Nombre de série : " + String.valueOf(currentTabata.getSerie()));
         holder.itemRepetition.setText("Nombre de répétition : " + String.valueOf(currentTabata.getRepetition()));
+        holder.itemBtnEdit.setTag(currentTabata);
     }
 
     @Override
@@ -63,6 +67,8 @@ public class TabataAdapter extends RecyclerView.Adapter<TabataAdapter.TabataHold
         private TextView itemSerie;
         private TextView itemRepetition;
 
+        private ImageView itemBtnEdit;
+
         public TabataHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.item_name);
@@ -72,6 +78,7 @@ public class TabataAdapter extends RecyclerView.Adapter<TabataAdapter.TabataHold
             itemReposLong = itemView.findViewById(R.id.item_repos_long);
             itemSerie = itemView.findViewById(R.id.item_serie);
             itemRepetition = itemView.findViewById(R.id.item_repetition);
+            itemBtnEdit = itemView.findViewById(R.id.btn_edit_item);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

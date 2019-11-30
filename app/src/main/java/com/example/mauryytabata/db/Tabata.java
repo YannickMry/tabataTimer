@@ -55,9 +55,7 @@ public class Tabata implements Parcelable {
     private ArrayList<String> tabataSequence;
 
     @Ignore
-    public Tabata() {
-        initTabataName();
-    }
+    public Tabata (){}
 
     public Tabata(String name, int preparation, int serie, int repetition, int travail, int repos, int reposLong) {
         this.name = name;
@@ -67,7 +65,6 @@ public class Tabata implements Parcelable {
         this.travail = travail;
         this.repos = repos;
         this.reposLong = reposLong;
-        initTabataName();
     }
 
     protected Tabata(Parcel in) {
@@ -155,8 +152,6 @@ public class Tabata implements Parcelable {
      * Création d'une séance
      */
     public ArrayList<String> createSeance() {
-        initTabataName();
-        initTabataColor();
 
         tabataSequence = new ArrayList<>();
         tabataTimer = new ArrayList<>();
@@ -191,10 +186,14 @@ public class Tabata implements Parcelable {
     public Integer getCurrentTimer(Integer index){ return this.tabataTimer.get(index); }
 
     public String getCurrentName(String step){
+        initTabataName();
         return this.tabataName.get(step);
     }
 
-    public String getCurrentColor(String step) { return this.tabataColor.get(step); }
+    public String getCurrentColor(String step) {
+        initTabataColor();
+        return this.tabataColor.get(step);
+    }
 
     public void initTabataName(){
         this.tabataName = new HashMap<>();

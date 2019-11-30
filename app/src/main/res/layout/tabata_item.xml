@@ -11,10 +11,21 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
+        <ImageView
+            android:id="@+id/btn_edit_item"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/edit"
+            android:onClick="itemEdit"
+            />
+
         <TextView
             android:id="@+id/item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_edit_item"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:text="Nom de la séance"

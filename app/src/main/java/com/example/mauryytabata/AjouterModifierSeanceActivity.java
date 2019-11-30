@@ -1,10 +1,7 @@
 package com.example.mauryytabata;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,19 +11,16 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mauryytabata.db.Tabata;
 import com.example.mauryytabata.db.TabataViewModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AjouterModifierSeanceActivity extends AppCompatActivity {
@@ -53,19 +47,35 @@ public class AjouterModifierSeanceActivity extends AppCompatActivity {
         this.editText = new HashMap<>();
         this.tabataViewModel = ViewModelProviders.of(this).get(TabataViewModel.class);
 
-        setTitle("Ajouter une séance");
+        Intent intent = getIntent();
+
+        if (intent.hasExtra(EXTRA_ID)){
+            setTitle("Modification de la séance");
+            tabata = intent.getExtras().getParcelable(EXTRA_TABATA);
+        } else {
+            setTitle("Ajouter une séance");
+        }
 
         showAllRow();
 
         // Ajoute un listener pour mettre à jour la propriété name de l'objet tabata
-        editTextName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    tabata.setName(editTextName.getText().toString());
-                }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
-        });
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                tabata.setName(editTextName.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+        editTextName.addTextChangedListener(textWatcher);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +99,11 @@ public class AjouterModifierSeanceActivity extends AppCompatActivity {
         Intent data = new Intent();
         data.putExtra(EXTRA_TABATA, tabata);
 
+        int id = getIntent().getIntExtra(EXTRA_ID, -1);
+        if (id != -1){
+            data.putExtra(EXTRA_ID, id);
+        }
+
         setResult(RESULT_OK, data);
         finish();
 
@@ -100,6 +115,7 @@ public class AjouterModifierSeanceActivity extends AppCompatActivity {
         this.ajouterSeanceLayout = (LinearLayout) inflater.inflate(R.layout.activity_ajouter_seance, null);
 
         this.editTextName = this.ajouterSeanceLayout.findViewById(R.id.ajouter_seance_name);
+        this.editTextName.setText(tabata.getName());
 
         this.btnSave = new Button(this);
         this.btnSave.setText("Sauvegarder");
