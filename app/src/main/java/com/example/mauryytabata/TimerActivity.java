@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class TimerActivity extends AppCompatActivity {
     private Tabata tabata;
     private int tabataStep = 0;
     private ArrayList<String> sequence;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +63,36 @@ public class TimerActivity extends AppCompatActivity {
             updatedTime = (tabata.getCurrentTimer(tabataStep) + 1) * 1000;
             updatedName = tabata.getCurrentName(sequence.get(tabataStep));
             updatedColor = tabata.getCurrentColor(sequence.get(tabataStep));
-            timerStart();
+
+            if (sequence.get(tabataStep) == "travail"){
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.sifflet);
+                this.mediaPlayer.start();
+            } else if (sequence.get(tabataStep) == "repos" || sequence.get(tabataStep) == "repos_long"){
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.cloche);
+                this.mediaPlayer.start();
+            }
+
+            if (mediaPlayer != null){
+                this.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        timerStart();
+                    }
+                });
+            } else {
+                timerStart();
+            }
+
             tabataStep++;
+            this.mediaPlayer = null;
         }else{
+            this.mediaPlayer = MediaPlayer.create(this, R.raw.applaudissement);
+            this.mediaPlayer.start();
             updatedTime = 0;
             updatedName = "Fin !";
             miseAJour();
         }
+
     }
 
     public void timerStart(){
